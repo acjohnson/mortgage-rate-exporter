@@ -1,0 +1,49 @@
+Title:               30-Year Fixed Rate Mortgage Average in the United States
+Series ID:           MORTGAGE30US
+Source:              Freddie Mac
+Release:             Primary Mortgage Market Survey
+Seasonal Adjustment: Not Seasonally Adjusted
+Frequency:           Weekly, Ending Thursday
+Units:               Percent
+Date Range:          1971-04-02 to 2024-03-28
+Last Updated:        2024-03-28 11:01 AM CDT
+Notes:               On November 17, 2022, Freddie Mac changed the methodology of the
+                     Primary Mortgage Market Survey® (PMMS®). The weekly mortgage rate is
+                     now based on applications submitted to Freddie Mac from lenders across
+                     the country. For more information regarding Freddie Mac’s
+                     enhancement, see their research note
+                     (https://www.freddiemac.com/research/insight/20221103-freddie-macs-newly-enhanced-mortgage-rate-survey).
+                     
+                     Data are provided “as is” by Freddie Mac®, with no warranties of
+                     any kind, express or implied, including but not limited to warranties
+                     of accuracy or implied warranties of merchantability or fitness for a
+                     particular purpose. Use of the data is at the user’s sole risk. In
+                     no event will Freddie Mac be liable for any damages arising out of or
+                     related to the data, including but not limited to direct, indirect,
+                     incidental, special, consequential, or punitive damages, whether under
+                     a contract, tort, or any other theory of liability, even if Freddie
+                     Mac is aware of the possibility of such damages.
+                     
+                     Copyright, 2016, Freddie Mac. Reprinted with permission.
+
+DATE        VALUE
+1971-04-02   7.33
+1971-04-09   7.31
+1971-04-16   7.31
+1971-04-23   7.31
+1971-04-30   7.29
+1971-05-07   7.38
+1971-05-14   7.42
+1971-05-21   7.44
+1971-05-28   7.46
+1971-06-04   7.52
+1971-06-11   7.52
+1971-06-18   7.54
+1971-06-25   7.54
+1971-07-02   7.54
+1971-07-09   7.54
+1971-07-16   7.60
+1971-07-23   7.65
+1971-07-30   7.69
+1971-08-06   7.66
+2024-03-28   6.79
