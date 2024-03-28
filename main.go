@@ -2,11 +2,12 @@ package main
 
 import (
 	"bufio"
+	"io"
 	"log"
 	"net/http"
-	"os"
 	"regexp"
 	"strconv"
+	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
@@ -21,14 +22,24 @@ var (
 	whitespaceRegex = regexp.MustCompile(`\s+`)
 )
 
-func parseMortgageData(filePath string) {
-	file, err := os.Open(filePath)
+func fetchAndParseMortgageData() {
+	resp, err := http.Get("https://fred.stlouisfed.org/data/MORTGAGE30US.txt")
 	if err != nil {
-		log.Fatalf("Failed to open file: %v", err)
+		log.Printf("Failed to fetch data: %v", err)
+		return
 	}
-	defer file.Close()
+	defer resp.Body.Close()
 
-	scanner := bufio.NewScanner(file)
+	if resp.StatusCode != http.StatusOK {
+		log.Printf("Failed to fetch data: HTTP status %d", resp.StatusCode)
+		return
+	}
+
+	parseMortgageData(resp.Body)
+}
+
+func parseMortgageData(reader io.Reader) {
+	scanner := bufio.NewScanner(reader)
 	inDataSection := false
 	for scanner.Scan() {
 		line := scanner.Text()
@@ -40,26 +51,31 @@ func parseMortgageData(filePath string) {
 		if inDataSection {
 			parts := whitespaceRegex.Split(line, -1)
 			if len(parts) == 2 {
-				date := parts[0]
 				value, err := strconv.ParseFloat(parts[1], 64)
 				if err != nil {
 					log.Printf("Failed to parse value: %v", err)
 					continue
 				}
 				mortgage30USMetric.Set(value)
-				log.Printf("Date: %s, Value: %.2f", date, value)
+				log.Printf("Value: %.2f", value)
 			}
 		}
 	}
 
 	if err := scanner.Err(); err != nil {
-		log.Fatalf("Error while reading file: %v", err)
+		log.Printf("Error while reading data: %v", err)
 	}
 }
 
 func main() {
-	filePath := "sample_mortgage_data.txt"
-	parseMortgageData(filePath)
+	fetchAndParseMortgageData()
+
+	ticker := time.NewTicker(24 * time.Hour)
+	go func() {
+		for range ticker.C {
+			fetchAndParseMortgageData()
+		}
+	}()
 
 	http.Handle("/metrics", promhttp.Handler())
 	log.Printf("Listening on :8080/metrics")
