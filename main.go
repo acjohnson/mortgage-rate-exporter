@@ -60,13 +60,14 @@ func parseMortgageData(reader io.Reader, metric prometheus.Gauge) {
 		if inDataSection {
 			parts := whitespaceRegex.Split(line, -1)
 			if len(parts) == 2 && parts[1] != "." {
+				date := parts[0]
 				value, err := strconv.ParseFloat(parts[1], 64)
 				if err != nil {
 					log.Printf("Failed to parse value: %v", err)
 					continue
 				}
 				metric.Set(value)
-				log.Printf("Value: %.2f", value)
+				log.Printf("Date: %s, Value: %.2f", date, value)
 			}
 		}
 	}
